@@ -1,4 +1,4 @@
-package pe.edu.vallegrande.Servlet;
+package pe.edu.vallegrande.servlet;
 
 import pe.edu.vallegrande.Controller.ProductController;
 import pe.edu.vallegrande.dto.Product;

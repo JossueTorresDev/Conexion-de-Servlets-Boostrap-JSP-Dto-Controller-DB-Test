@@ -1,7 +1,8 @@
-<%@ page import="pe.edu.vallegrande.dto.Product" %>
-<%@ page import="pe.edu.vallegrande.Controller.ProductController" %>
+<%@ page import="pe.edu.vallegrande.dto.Order" %>
+<%@ page import="pe.edu.vallegrande.Controller.OrderController" %>
 <%@ page import="java.util.List" %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -11,7 +12,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title>Listado de Productos</title>
+    <title>Listado de Pedidos</title>
 
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -64,7 +65,7 @@
         #page-content-wrapper {
             width: 100%;
             padding: 20px;
-            margin-left: 250px; /* Make room for the sidebar */
+            margin-left: 250px;
         }
 
         /* Navbar */
@@ -121,10 +122,8 @@
             <i class="fas fa-shopping-cart me-2"></i>AkiExpress
         </div>
         <div class="list-group list-group-flush">
-            <a href="listadoProductos.jsp" class="list-group-item list-group-item-action active">Inicio</a>
-            <a href="listadoProductos.jsp" class="list-group-item list-group-item-action">Producto</a>
-            <a href="listadoProductos.jsp" class="list-group-item list-group-item-action">Listado de Productos</a>
-            <a href="listadoOrder.jsp" class="list-group-item list-group-item-action">Order</a>
+            <a href="listadoOrder.jsp" class="list-group-item list-group-item-action active">Inicio</a>
+            <a href="listadoOrder.jsp" class="list-group-item list-group-item-action">Pedidos</a>
         </div>
     </div>
 
@@ -158,45 +157,59 @@
 
         <!-- Content -->
         <div class="container-fluid px-4">
-            <h1 class="mt-4">Listado de Productos</h1>
+            <h1 class="mt-4">Listado de Pedidos</h1>
 
-            <!-- Card para agregar un nuevo producto -->
+            <!-- Card para agregar un nuevo pedido -->
             <div class="card mb-4">
                 <div class="card-header">
-                    Registrar Producto
+                    Registrar Pedido
                 </div>
                 <div class="card-body">
-                    <form action="ProductServlet" method="post">
+                    <form action="OrderServlet" method="post">
                         <input type="hidden" name="action" value="add">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="productName">Nombre del Producto</label>
-                                <input type="text" class="form-control" id="productName" name="productName" placeholder="Nombre del producto" required>
+                                <label for="name">Nombre del Cliente</label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Nombre del cliente" required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="description">Descripción</label>
-                                <input type="text" class="form-control" id="description" name="description" placeholder="Descripción del producto" required>
+                                <label for="phone">Teléfono</label>
+                                <input type="text" class="form-control" id="phone" name="phone" placeholder="Teléfono" required>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="purchasePrice">Precio de Compra</label>
-                                <input type="number" step="0.01" class="form-control" id="purchasePrice" name="purchasePrice" placeholder="Precio de compra" required>
+                                <label for="address">Dirección</label>
+                                <input type="text" class="form-control" id="address" name="address" placeholder="Dirección" required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="salePrice">Precio de Venta</label>
-                                <input type="number" step="0.01" class="form-control" id="salePrice" name="salePrice" placeholder="Precio de venta" required>
+                                <label for="productCodeOrName">Producto</label>
+                                <input type="text" class="form-control" id="productCodeOrName" name="productCodeOrName" placeholder="Código o nombre del producto" required>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-success">Agregar Producto</button>
+                        <div class="row">
+                            <div class="col-md-3 mb-3">
+                                <label for="quantity">Cantidad</label>
+                                <input type="number" class="form-control" id="quantity" name="quantity" placeholder="Cantidad" required>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="price">Precio</label>
+                                <input type="number" step="0.01" class="form-control" id="price" name="price" placeholder="Precio" required>
+                            </div>
+                            <div class="col-md-3 mb-3">
+                                <label for="subtotal">Subtotal</label>
+                                <input type="number" step="0.01" class="form-control" id="subtotal" name="subtotal" placeholder="Subtotal" required>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success">Agregar Pedido</button>
                     </form>
                 </div>
             </div>
 
-            <!-- Card para listado de productos -->
+            <!-- Card para listado de pedidos -->
             <div class="card mb-4">
                 <div class="card-header">
-                    Productos
+                    Pedidos
                 </div>
                 <div class="card-body">
                     <div class="table-responsive">
@@ -204,38 +217,44 @@
                             <thead>
                             <tr>
                                 <th>ID</th>
-                                <th>Nombre</th>
-                                <th>Descripción</th>
-                                <th>Precio de Compra</th>
-                                <th>Precio de Venta</th>
+                                <th>Nombre del Cliente</th>
+                                <th>Teléfono</th>
+                                <th>Dirección</th>
+                                <th>Producto</th>
+                                <th>Cantidad</th>
+                                <th>Precio</th>
+                                <th>Subtotal</th>
                                 <th>Acciones</th>
                             </tr>
                             </thead>
                             <tbody>
                             <%
-                                ProductController productController = new ProductController();
-                                List<Product> products = productController.listarTodos();
+                                OrderController orderController = new OrderController();
+                                List<Order> orders = orderController.listarTodos();
 
-                                if (products.isEmpty()) {
+                                if (orders.isEmpty()) {
                             %>
                             <tr>
-                                <td colspan="6" class="text-center">No hay productos disponibles por el momento.</td>
+                                <td colspan="9" class="text-center">No hay pedidos disponibles por el momento.</td>
                             </tr>
                             <%
                             } else {
-                                for (Product product : products) {
+                                for (Order order : orders) {
                             %>
                             <tr>
-                                <td><%= product.getId() %></td>
-                                <td><%= product.getProductName() %></td>
-                                <td><%= product.getDescription() %></td>
-                                <td><%= product.getPurchasePrice() %></td>
-                                <td><%= product.getSalePrice() %></td>
+                                <td><%= order.getId() %></td>
+                                <td><%= order.getName() %></td>
+                                <td><%= order.getPhone() %></td>
+                                <td><%= order.getAddress() %></td>
+                                <td><%= order.getProductCodeOrName() %></td>
+                                <td><%= order.getQuantity() %></td>
+                                <td><%= order.getPrice() %></td>
+                                <td><%= order.getSubtotal() %></td>
                                 <td>
                                     <!-- Botón Editar -->
-                                    <a href="editarProducto.jsp?id=<%= product.getId() %>" class="btn btn-primary btn-sm">Editar</a>
+                                    <a href="editarOrder.jsp?id=<%= order.getId() %>" class="btn btn-primary btn-sm">Editar</a>
                                     <!-- Botón Eliminar -->
-                                    <a href="ProductServlet?action=delete&id=<%= product.getId() %>" class="btn btn-danger btn-sm">Eliminar</a>
+                                    <a href="OrderServlet?action=delete&id=<%= order.getId() %>" class="btn btn-danger btn-sm">Eliminar</a>
                                 </td>
                             </tr>
                             <%
